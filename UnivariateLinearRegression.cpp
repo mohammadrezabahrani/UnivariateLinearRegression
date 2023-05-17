@@ -73,8 +73,7 @@ class LinearRegression {
         double RMSE = 0;
 
 
-        double findMin(double arr[], i
-        nt size) {
+        double findMin(double arr[], int size) {
             double minVal = arr[0];
             for (int i = 1; i < size; i++) {
                 if (arr[i] < minVal) { minVal = arr[i];}
