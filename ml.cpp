@@ -15,15 +15,9 @@ class LinearRegression {
             y = y_data;
             y_len = y_size;
            
-            x_min = findMin(x,x_len);
-            x_max = findMax(x,x_len);
-
-            y_min = findMin(y,y_len);
-            y_max = findMax(y,y_len);
-
             if(normaldata){ Normalize(); }
+
             calculate_hat();
-            
             calculate_sum_x_hat_y_hat();
             calculate_beta1();
             calculate_beta0();
@@ -36,16 +30,11 @@ class LinearRegression {
         double* getX() { return x; }
         double* getXHat() { return x_hat; }
         int getLenX() { return x_len; }
-        double getMinX() { return x_min; }
-        double getMaxX() { return x_max; }
 
         double* getY() { return y; }
         double* getYHat() { return y_hat; }
         int getLenY() { return y_len; }
-        double getMinY() { return y_min; }
-        double getMaxY() { return y_max; }
-
-
+        
         double getBeta1() { return beta1; }
         double getBeta0() { return beta0; }
 
@@ -58,10 +47,7 @@ class LinearRegression {
         double getRMSE() { return RMSE; }
 
 
-        double predict(double x)
-        {
-            beta0 + beta1 * x;
-        }
+        double predict(double x) { return beta0 + beta1 * x; }
 
     private:
         
@@ -69,15 +55,10 @@ class LinearRegression {
         double* y = nullptr;
         int x_len = 0;
         int y_len = 0;
-        double x_min = 0;
-        double x_max = 0;
-        double y_min = 0;
-        double y_max = 0;
 
         double *x_hat = nullptr;
         double *y_hat = nullptr;
         double *x_hat_squared = nullptr;
-
 
         double x_hat_squared_sum = 0;
         double y_hat_x_hat_sum = 0;
@@ -92,12 +73,11 @@ class LinearRegression {
         double RMSE = 0;
 
 
-        double findMin(double arr[], int size) {
+        double findMin(double arr[], i
+        nt size) {
             double minVal = arr[0];
             for (int i = 1; i < size; i++) {
-                if (arr[i] < minVal) {
-                    minVal = arr[i];
-                }
+                if (arr[i] < minVal) { minVal = arr[i];}
             }
             return minVal;
         }
@@ -105,22 +85,26 @@ class LinearRegression {
         double findMax(double arr[], int size) {
             double maxVal = arr[0];
             for (int i = 1; i < size; i++) {
-                if (arr[i] > maxVal) {
-                    maxVal = arr[i];
-                }
+                if (arr[i] > maxVal) { maxVal = arr[i];}
             }
             return maxVal;
         }
 
         void Normalize()
         {
+
+            double x_min = findMin(x,x_len);
+            double x_max = findMax(x,x_len);
+            double y_min = findMin(y,y_len);
+            double y_max = findMax(y,y_len);
+
             for(int index=0;index<x_len;index++)
             {
-                x[index] = (x[index] - x_min) / (x_max-x_min);
+                x[index] = (x[index] - x_min) / (x_max - x_min);
             }
             for(int index=0;index<y_len;index++)
             {
-                y[index] = (y[index] - y_min) / (y_max-y_min);
+                y[index] = (y[index] - y_min) / (y_max - y_min);
             }
         }
         
@@ -143,13 +127,11 @@ class LinearRegression {
             x_hat = new double[x_len];
             y_hat = new double[y_len];
         
-
             double avgx = avg_x();
             double avgy = avg_y();
             for(int i=0;i<x_len;i++) { x_hat[i] = x[i] - avgx;}
             for(int i=0;i<y_len;i++) { y_hat[i] = y[i] - avgy;}
             for(int i=0;i<y_len;i++) { y_hat_x_hat_sum += x_hat[i] * y_hat[i];}
-
 
         }
 
@@ -157,7 +139,7 @@ class LinearRegression {
         {
             x_hat_squared = new double[x_len];
             x_hat_squared_sum = 0;
-            for(int i=0;i<x_len;i++) 
+            for(int i=0; i<x_len; i++) 
             { 
                 x_hat_squared[i] = x_hat[i] * x_hat[i];
                 x_hat_squared_sum += x_hat_squared[i];
@@ -211,10 +193,6 @@ class LinearRegression {
         {
            RMSE =  std::sqrt(MSE);
         }
-
-
-
-
 };
 
 int main() {
@@ -229,8 +207,10 @@ int main() {
 
     LinearRegression res;
 
-    res.Set_X_Data(x, sizex,y,sizey,true); 
-    
+    res.Set_X_Data(x, sizex,y,sizey,false); 
+    cout<< res.predict(230)<<endl;
+
+    cout<<res.getMAE();
 
     cout<<endl<<"******************* END ******************" <<endl;
     return 0;
